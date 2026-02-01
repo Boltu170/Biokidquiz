@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kidney Structure & Osmoregulation Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f39c12 0%, #d35400 100%);
+        min-height: 100vh;
+        padding: 20px;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .quiz-header {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+
+    .quiz-header h1 {
+        color: #2c3e50;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    .quiz-header p {
+        color: #7f8c8d;
+        font-size: 1.1em;
+    }
+
+    .score-board {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .score-item {
+        text-align: center;
+    }
+
+    .score-label {
+        font-size: 0.9em;
+        color: #7f8c8d;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .score-value {
+        font-size: 2em;
+        font-weight: bold;
+        color: #f39c12;
+    }
+
+    .question-card {
+        background: white;
+        border-radius: 20px;
+        padding: 35px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s;
+    }
+
+    .question-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #f39c12;
+    }
+
+    .question-number {
+        background: linear-gradient(135deg, #f39c12 0%, #d35400 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    .question-type {
+        background: #f0f0f0;
+        padding: 5px 15px;
+        border-radius: 15px;
+        font-size: 0.9em;
+        color: #666;
+    }
+
+    .question-text {
+        font-size: 1.25em;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-weight: 500;
+    }
+
+    .hint-box {
+        background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+    }
+
+    .hint-icon {
+        font-size: 1.5em;
+        margin-right: 10px;
+    }
+
+    .hint-text {
+        color: #2c3e50;
+        font-weight: 500;
+    }
+
+    .options {
+        margin: 20px 0;
+    }
+
+    .option {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 10px 0;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 2px solid transparent;
+    }
+
+    .option:hover {
+        background: #e9ecef;
+        transform: translateX(5px);
+    }
+
+    .option input {
+        margin-right: 12px;
+        cursor: pointer;
+    }
+
+    .option label {
+        cursor: pointer;
+        width: 100%;
+        display: inline-block;
+    }
+
+    .fill-blank-input {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        font-size: 1.1em;
+        margin: 15px 0;
+        transition: border 0.3s;
+    }
+
+    .fill-blank-input:focus {
+        outline: none;
+        border-color: #f39c12;
+    }
+
+    .show-answer-btn {
+        background: linear-gradient(135deg, #f39c12 0%, #d35400 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-size: 1.1em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+        width: 100%;
+        margin-top: 15px;
+    }
+
+    .show-answer-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(243, 156, 18, 0.6);
+    }
+
+    .answer-section {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 12px;
+        animation: slideDown 0.4s ease;
+    }
+
+    .answer-section.show {
+        display: block;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .answer-section.correct {
+        background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
+    }
+
+    .answer-section.incorrect {
+        background: linear-gradient(135deg, #ff7675 0%, #d63031 100%);
+    }
+
+    .answer-label {
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+        color: white;
+    }
+
+    .explanation {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px;
+        border-radius: 10px;
+        color: #2c3e50;
+        line-height: 1.8;
+    }
+
+    .explanation-title {
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #f39c12;
+    }
+
+    .final-score {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        margin-top: 30px;
+    }
+
+    .final-score h2 {
+        color: #2c3e50;
+        font-size: 2.5em;
+        margin-bottom: 20px;
+    }
+
+    .final-percentage {
+        font-size: 4em;
+        font-weight: bold;
+        background: linear-gradient(135deg, #f39c12 0%, #d35400 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 20px 0;
+    }
+
+    .performance-message {
+        font-size: 1.3em;
+        color: #7f8c8d;
+        margin: 20px 0;
+    }
+
+    .restart-btn {
+        background: linear-gradient(135deg, #f39c12 0%, #d35400 100%);
+        color: white;
+        border: none;
+        padding: 15px 50px;
+        border-radius: 25px;
+        font-size: 1.2em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 20px;
+    }
+
+    .restart-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(243, 156, 18, 0.6);
+    }
+
+    .submit-quiz-btn {
+        background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+        color: white;
+        border: none;
+        padding: 20px 60px;
+        border-radius: 30px;
+        font-size: 1.3em;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 6px 20px rgba(0, 184, 148, 0.4);
+        display: block;
+        margin: 40px auto;
+    }
+
+    .submit-quiz-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 184, 148, 0.6);
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div class="quiz-header">
+            <h1>🧬 Kidney & Osmoregulation Quiz</h1>
+            <p>Test your knowledge of kidney structure, ultrafiltration, selective reabsorption, and osmoregulation</p>
+            <p style="margin-top: 10px; font-size: 0.95em; color: #95a5a6;">15 Questions • Medium Difficulty • Mixed Format</p>
+        </div>
+
+```
+    <div class="score-board">
+        <div class="score-item">
+            <div class="score-label">Questions Answered</div>
+            <div class="score-value" id="answeredCount">0 / 15</div>
+        </div>
+        <div class="score-item">
+            <div class="score-label">Current Score</div>
+            <div class="score-value" id="currentScore">0</div>
+        </div>
+        <div class="score-item">
+            <div class="score-label">Progress</div>
+            <div class="score-value" id="progressPercent">0%</div>
+        </div>
+    </div>
+
+    <div id="quizContainer">
+        <!-- Question 1 -->
+        <div class="question-card" data-question="1">
+            <div class="question-header">
+                <span class="question-number">Question 1</span>
+                <span class="question-type">Multiple Choice</span>
+            </div>
+            <div class="question-text">
+                Which region of the kidney contains the renal (Bowman's) capsules, convoluted tubules, and blood vessels?
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Kidney Structure - Kidney Anatomy</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q1a" name="q1" value="a">
+                    <label for="q1a">a) Medulla</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q1b" name="q1" value="b">
+                    <label for="q1b">b) Cortex</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q1c" name="q1" value="c">
+                    <label for="q1c">c) Renal pelvis</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q1d" name="q1" value="d">
+                    <label for="q1d">d) Fibrous capsule</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(1, 'b', 'mcq')">Show Answer</button>
+            <div class="answer-section" id="answer1">
+                <div class="answer-label">✓ Correct Answer: b) Cortex</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    The cortex is the lighter coloured outer region of the kidney made up of renal (Bowman's) capsules, convoluted tubules and blood vessels. The medulla is the darker inner region containing loops of Henle and collecting ducts.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card" data-question="2">
+            <div class="question-header">
+                <span class="question-number">Question 2</span>
+                <span class="question-type">Fill in the Blank</span>
+            </div>
+            <div class="question-text">
+                The inner layer of the renal (Bowman's) capsule is made up of specialised cells called __________.
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Kidney Structure - Nephron Components</span>
+            </div>
+            <input type="text" class="fill-blank-input" id="q2input" placeholder="Type your answer here...">
+            <button class="show-answer-btn" onclick="checkAnswer(2, 'podocytes', 'fill')">Show Answer</button>
+            <div class="answer-section" id="answer2">
+                <div class="answer-label">✓ Correct Answer: podocytes</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    Podocytes are specialised epithelial cells that line the inner layer of Bowman's capsule. They have many finger-like projections that wrap around the glomerular capillaries and create filtration slits, allowing ultrafiltration while preventing large proteins from passing through.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card" data-question="3">
+            <div class="question-header">
+                <span class="question-number">Question 3</span>
+                <span class="question-type">True/False</span>
+            </div>
+            <div class="question-text">
+                True or False: The walls of the proximal convoluted tubule are lined with epithelial cells that have microvilli to increase surface area for reabsorption.
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Kidney Structure - Nephron Components & Kidney Function - PCT Adaptations</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q3a" name="q3" value="true">
+                    <label for="q3a">True</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q3b" name="q3" value="false">
+                    <label for="q3b">False</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(3, 'true', 'tf')">Show Answer</button>
+            <div class="answer-section" id="answer3">
+                <div class="answer-label">✓ Correct Answer: True</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    The proximal convoluted tubule (PCT) walls are made of cuboidal epithelial cells with microvilli forming a "brush border" that greatly increases the surface area available for selective reabsorption of glucose, amino acids, and other useful substances from the filtrate back into the blood.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card" data-question="4">
+            <div class="question-header">
+                <span class="question-number">Question 4</span>
+                <span class="question-type">Multiple Choice</span>
+            </div>
+            <div class="question-text">
+                What generates the high hydrostatic pressure needed for ultrafiltration in the glomerulus?
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Kidney Function - Ultrafiltration</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q4a" name="q4" value="a">
+                    <label for="q4a">a) Osmotic pressure from proteins in blood</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q4b" name="q4" value="b">
+                    <label for="q4b">b) Contraction of the left ventricle and the afferent arteriole being wider than the efferent arteriole</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q4c" name="q4" value="c">
+                    <label for="q4c">c) Active transport by podocytes</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q4d" name="q4" value="d">
+                    <label for="q4d">d) Peristalsis in the ureter</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(4, 'b', 'mcq')">Show Answer</button>
+            <div class="answer-section" id="answer4">
+                <div class="answer-label">✓ Correct Answer: b) Contraction of the left ventricle and the afferent arteriole being wider than the efferent arteriole</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    High hydrostatic pressure in the glomerulus is generated by two factors: (1) arteriole pressure from contraction of the left ventricle pumping blood, and (2) the afferent arteriole (incoming) being wider than the efferent arteriole (outgoing), which creates a bottleneck effect that increases pressure in the glomerular capillaries.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="question-card" data-question="5">
+            <div class="question-header">
+                <span class="question-number">Question 5</span>
+                <span class="question-type">Multiple Choice</span>
+            </div>
+            <div class="question-text">
+                Which of the following substances is NOT present in the glomerular filtrate under normal conditions?
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Kidney Function - Ultrafiltration (What's in the filtrate?)</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q5a" name="q5" value="a">
+                    <label for="q5a">a) Glucose</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q5b" name="q5" value="b">
+                    <label for="q5b">b) Urea</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q5c" name="q5" value="c">
+                    <label for="q5c">c) Large proteins (Mr > 69,000)</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q5d" name="q5" value="d">
+                    <label for="q5d">d) Amino acids</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(5, 'c', 'mcq')">Show Answer</button>
+            <div class="answer-section" id="answer5">
+                <div class="answer-label">✓ Correct Answer: c) Large proteins (Mr > 69,000)</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    Large proteins with molecular mass greater than 69,000, along with erythrocytes (red blood cells) and leucocytes (white blood cells), remain in the blood and are NOT filtered into the glomerular filtrate. The basement membrane acts as a filter that excludes these large molecules. Glucose, urea, amino acids, water, and small proteins do pass through into the filtrate.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 6 -->
+        <div class="question-card" data-question="6">
+            <div class="question-header">
+                <span class="question-number">Question 6</span>
+                <span class="question-type">Fill in the Blank</span>
+            </div>
+            <div class="question-text">
+                In the proximal convoluted tubule, glucose is reabsorbed by __________ with sodium ions.
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Kidney Function - Selective Reabsorption in PCT</span>
+            </div>
+            <input type="text" class="fill-blank-input" id="q6input" placeholder="Type your answer here...">
+            <button class="show-answer-btn" onclick="checkAnswer(6, 'co-transport', 'fill')">Show Answer</button>
+            <div class="answer-section" id="answer6">
+                <div class="answer-label">✓ Correct Answer: co-transport (also accept: cotransport, symport)</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    Glucose is reabsorbed from the PCT lumen by co-transport (also called symport) with sodium ions. The sodium-potassium pump actively removes Na+ from the epithelial cells, creating a concentration gradient. Na+ then moves down this gradient from the filtrate into the cell, and glucose is carried along with it through co-transport proteins. This is a form of secondary active transport.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 7 -->
+        <div class="question-card" data-question="7">
+            <div class="question-header">
+                <span class="question-number">Question 7</span>
+                <span class="question-type">True/False</span>
+            </div>
+            <div class="question-text">
+                True or False: ALL glucose that enters the glomerular filtrate is normally reabsorbed in the proximal convoluted tubule.
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Kidney Function - Selective Reabsorption Summary Table</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q7a" name="q7" value="true">
+                    <label for="q7a">True</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q7b" name="q7" value="false">
+                    <label for="q7b">False</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(7, 'true', 'tf')">Show Answer</button>
+            <div class="answer-section" id="answer7">
+                <div class="answer-label">✓ Correct Answer: True</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    Under normal healthy conditions, ALL glucose is reabsorbed from the PCT by co-transport with Na+. Glucose is too valuable to waste, so the kidney reabsorbs 100% of filtered glucose. If glucose appears in urine (glycosuria), it indicates either blood glucose levels are too high (as in diabetes) or there's kidney damage affecting reabsorption.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 8 -->
+        <div class="question-card" data-question="8">
+            <div class="question-header">
+                <span class="question-number">Question 8</span>
+                <span class="question-type">Multiple Choice</span>
+            </div>
+            <div class="question-text">
+                What is the primary role of the loop of Henle?
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Kidney Function - Role of Loop of Henle</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q8a" name="q8" value="a">
+                    <label for="q8a">a) To filter blood under high pressure</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q8b" name="q8" value="b">
+                    <label for="q8b">b) To establish a lower water potential in the medulla tissue fluid, allowing water reabsorption from the collecting duct</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q8c" name="q8" value="c">
+                    <label for="q8c">c) To reabsorb all glucose and amino acids</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q8d" name="q8" value="d">
+                    <label for="q8d">d) To secrete ADH into the bloodstream</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(8, 'b', 'mcq')">Show Answer</button>
+            <div class="answer-section" id="answer8">
+                <div class="answer-label">✓ Correct Answer: b) To establish a lower water potential in the medulla tissue fluid, allowing water reabsorption from the collecting duct</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    The loop of Henle's primary role is to create a water potential gradient in the medulla by actively transporting Na+ and Cl- ions out of the ascending limb. This lowers the water potential of the medulla tissue fluid, becoming increasingly negative deeper in the medulla. This gradient allows water to be reabsorbed by osmosis from the collecting duct as it passes through the medulla.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 9 -->
+        <div class="question-card" data-question="9">
+            <div class="question-header">
+                <span class="question-number">Question 9</span>
+                <span class="question-type">Multiple Choice</span>
+            </div>
+            <div class="question-text">
+                Why does a kangaroo rat possess a very long loop of Henle compared to other mammals?
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Kidney Function - Loop of Henle Length & Desert Adaptations</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q9a" name="q9" value="a">
+                    <label for="q9a">a) To filter more blood quickly</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q9b" name="q9" value="b">
+                    <label for="q9b">b) To produce more concentrated urine and conserve water in desert conditions</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q9c" name="q9" value="c">
+                    <label for="q9c">c) To reabsorb more glucose</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q9d" name="q9" value="d">
+                    <label for="q9d">d) To increase ADH production</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(9, 'b', 'mcq')">Show Answer</button>
+            <div class="answer-section" id="answer9">
+                <div class="answer-label">✓ Correct Answer: b) To produce more concentrated urine and conserve water in desert conditions</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    The longer the loop of Henle, the more concentrated (lower water potential) the tissue fluid in the medulla becomes, which means more water can be reabsorbed from the collecting duct. Desert animals like the kangaroo rat have extremely long loops of Henle to produce very concentrated urine and minimize water loss—a crucial adaptation for survival in dry environments with limited water availability.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 10 -->
+        <div class="question-card" data-question="10">
+            <div class="question-header">
+                <span class="question-number">Question 10</span>
+                <span class="question-type">Fill in the Blank</span>
+            </div>
+            <div class="question-text">
+                Osmoregulation is the regulation of the __________ __________ of the blood and body fluids.
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Homeostasis & Osmoregulation - Definitions</span>
+            </div>
+            <input type="text" class="fill-blank-input" id="q10input" placeholder="Type your answer here...">
+            <button class="show-answer-btn" onclick="checkAnswer(10, 'water potential', 'fill')">Show Answer</button>
+            <div class="answer-section" id="answer10">
+                <div class="answer-label">✓ Correct Answer: water potential</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    Osmoregulation is the regulation of the water potential of the blood and body fluids. It's a homeostatic mechanism controlled by negative feedback that maintains blood water potential within narrow limits. This is essential because cells need a constant water potential to function properly—too high or too low can damage cells through excessive water uptake or loss.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 11 -->
+        <div class="question-card" data-question="11">
+            <div class="question-header">
+                <span class="question-number">Question 11</span>
+                <span class="question-type">Multiple Choice</span>
+            </div>
+            <div class="question-text">
+                Where are the osmoreceptors located that detect changes in blood water potential?
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Homeostasis & Osmoregulation - Control Mechanism</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q11a" name="q11" value="a">
+                    <label for="q11a">a) Posterior pituitary gland</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q11b" name="q11" value="b">
+                    <label for="q11b">b) Hypothalamus</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q11c" name="q11" value="c">
+                    <label for="q11c">c) Collecting duct</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q11d" name="q11" value="d">
+                    <label for="q11d">d) Adrenal cortex</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(11, 'b', 'mcq')">Show Answer</button>
+            <div class="answer-section" id="answer11">
+                <div class="answer-label">✓ Correct Answer: b) Hypothalamus</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    Osmoreceptors are located in the hypothalamus of the brain. These specialised receptors detect changes in the water potential of the blood. When blood water potential falls (becomes more negative/more concentrated), osmoreceptors stimulate neurosecretory cells to produce and release ADH. The hypothalamus is the control center, while the posterior pituitary gland stores and releases the ADH.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 12 -->
+        <div class="question-card" data-question="12">
+            <div class="question-header">
+                <span class="question-number">Question 12</span>
+                <span class="question-type">True/False</span>
+            </div>
+            <div class="question-text">
+                True or False: When blood water potential decreases (blood becomes more concentrated), the posterior pituitary releases MORE ADH.
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Homeostasis & Osmoregulation - ADH Release Mechanism</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q12a" name="q12" value="true">
+                    <label for="q12a">True</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q12b" name="q12" value="false">
+                    <label for="q12b">False</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(12, 'true', 'tf')">Show Answer</button>
+            <div class="answer-section" id="answer12">
+                <div class="answer-label">✓ Correct Answer: True</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    When blood water potential decreases (blood is too concentrated/dehydrated), osmoreceptors in the hypothalamus detect this change and stimulate the posterior pituitary gland to release MORE ADH. This ADH increases the permeability of collecting duct walls to water, allowing more water reabsorption, producing concentrated urine, and raising blood water potential back to normal. This is negative feedback control.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 13 -->
+        <div class="question-card" data-question="13">
+            <div class="question-header">
+                <span class="question-number">Question 13</span>
+                <span class="question-type">Multiple Choice</span>
+            </div>
+            <div class="question-text">
+                How does ADH increase the permeability of the collecting duct to water?
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Homeostasis & Osmoregulation - Effect of ADH</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q13a" name="q13" value="a">
+                    <label for="q13a">a) By directly creating holes in the membrane</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q13b" name="q13" value="b">
+                    <label for="q13b">b) By causing vesicles containing aquaporins (water channels) to fuse with the plasma membrane</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q13c" name="q13" value="c">
+                    <label for="q13c">c) By actively transporting water across the membrane</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q13d" name="q13" value="d">
+                    <label for="q13d">d) By dissolving the phospholipid bilayer</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(13, 'b', 'mcq')">Show Answer</button>
+            <div class="answer-section" id="answer13">
+                <div class="answer-label">✓ Correct Answer: b) By causing vesicles containing aquaporins (water channels) to fuse with the plasma membrane</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    ADH binds to complementary receptors on the plasma membrane of cuboidal epithelial cells lining the collecting duct. Through signal transduction and activation of phosphorylase enzymes, this triggers vesicles containing aquaporins (water channel proteins) to fuse with the plasma membrane. This insertion of aquaporins increases membrane permeability to water, allowing more water to move by osmosis from the filtrate into the tissue fluid and blood.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 14 -->
+        <div class="question-card" data-question="14">
+            <div class="question-header">
+                <span class="question-number">Question 14</span>
+                <span class="question-type">Fill in the Blank</span>
+            </div>
+            <div class="question-text">
+                ADH has a half-life of __________ minutes, meaning every 20 minutes about half the ADH in the blood is broken down.
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Homeostasis & Osmoregulation - Negative Feedback & ADH Breakdown</span>
+            </div>
+            <input type="text" class="fill-blank-input" id="q14input" placeholder="Type your answer here...">
+            <button class="show-answer-btn" onclick="checkAnswer(14, '20', 'fill')">Show Answer</button>
+            <div class="answer-section" id="answer14">
+                <div class="answer-label">✓ Correct Answer: 20</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    ADH has a half-life of 20 minutes. This relatively short half-life is important for the negative feedback system—when blood water potential returns to normal, ADH release stops, and the existing ADH in the blood is gradually broken down. After 20 mins, 50% remains; after 40 mins, 25%; after 60 mins, 12.5%, etc. This allows the body to quickly respond to changing water balance conditions.
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 15 -->
+        <div class="question-card" data-question="15">
+            <div class="question-header">
+                <span class="question-number">Question 15</span>
+                <span class="question-type">True/False</span>
+            </div>
+            <div class="question-text">
+                True or False: In the distal convoluted tubule (DCT), the sodium-potassium pump actively removes Na+ from the filtrate into the blood and pumps K+ from blood into the filtrate.
+            </div>
+            <div class="hint-box">
+                <span class="hint-icon">📍</span>
+                <span class="hint-text">Hint: Refer to Kidney Function - Distal Convoluted Tubule</span>
+            </div>
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="q15a" name="q15" value="true">
+                    <label for="q15a">True</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="q15b" name="q15" value="false">
+                    <label for="q15b">False</label>
+                </div>
+            </div>
+            <button class="show-answer-btn" onclick="checkAnswer(15, 'true', 'tf')">Show Answer</button>
+            <div class="answer-section" id="answer15">
+                <div class="answer-label">✓ Correct Answer: True</div>
+                <div class="explanation">
+                    <div class="explanation-title">💡 Explanation:</div>
+                    In the DCT, the sodium-potassium pump actively transports Na+ from the filtrate out into the blood in capillaries, while simultaneously pumping K+ from the blood into the filtrate to be excreted in urine. This helps regulate the concentrations of Na+ and K+ in the blood. The hormone aldosterone (from the adrenal cortex) can increase the number of these pumps in response to high blood K+ levels.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <button class="submit-quiz-btn" onclick="calculateFinalScore()">🎯 Submit Quiz & See Final Score</button>
+
+    <div id="finalScoreSection" style="display: none;"></div>
+
+</div>
+
+<script>
+    let score = 0;
+    let answeredQuestions = new Set();
+    const totalQuestions = 15;
+
+    function checkAnswer(questionNum, correctAnswer, type) {
+        const answerSection = document.getElementById('answer' + questionNum);
+        
+        // If already shown, just toggle visibility
+        if (answerSection.classList.contains('show')) {
+            answerSection.classList.remove('show');
+            return;
+        }
+
+        let userAnswer;
+        let isCorrect = false;
+
+        if (type === 'mcq' || type === 'tf') {
+            const selectedOption = document.querySelector(`input[name="q${questionNum}"]:checked`);
+            if (!selectedOption) {
+                alert('Please select an answer first!');
+                return;
+            }
+            userAnswer = selectedOption.value;
+            isCorrect = userAnswer === correctAnswer;
+        } else if (type === 'fill') {
+            const input = document.getElementById('q' + questionNum + 'input');
+            userAnswer = input.value.trim().toLowerCase();
+            correctAnswer = correctAnswer.toLowerCase();
+            // Allow variations for fill-in-blank answers
+            if (questionNum === 6) {
+                // For co-transport question, accept variations
+                isCorrect = userAnswer === correctAnswer || userAnswer === 'cotransport' || userAnswer === 'symport';
+            } else {
+                isCorrect = userAnswer === correctAnswer;
+            }
+        }
+
+        // Update score if this is the first time answering this question
+        if (!answeredQuestions.has(questionNum)) {
+            if (isCorrect) {
+                score++;
+            }
+            answeredQuestions.add(questionNum);
+            updateScoreboard();
+        }
+
+        // Show answer with appropriate styling
+        answerSection.classList.add('show');
+        if (isCorrect) {
+            answerSection.classList.add('correct');
+            answerSection.classList.remove('incorrect');
+        } else {
+            answerSection.classList.add('incorrect');
+            answerSection.classList.remove('correct');
+        }
+    }
+
+    function updateScoreboard() {
+        document.getElementById('answeredCount').textContent = `${answeredQuestions.size} / ${totalQuestions}`;
+        document.getElementById('currentScore').textContent = score;
+        const percentage = Math.round((answeredQuestions.size / totalQuestions) * 100);
+        document.getElementById('progressPercent').textContent = percentage + '%';
+    }
+
+    function calculateFinalScore() {
+        if (answeredQuestions.size < totalQuestions) {
+            const unanswered = totalQuestions - answeredQuestions.size;
+            if (!confirm(`You have ${unanswered} unanswered question(s). Submit anyway?`)) {
+                return;
+            }
+        }
+
+        const percentage = Math.round((score / totalQuestions) * 100);
+        let performanceMessage = '';
+        let performanceColor = '';
+
+        if (percentage >= 90) {
+            performanceMessage = '🌟 Outstanding! You have excellent knowledge of kidney function and osmoregulation!';
+            performanceColor = '#00b894';
+        } else if (percentage >= 75) {
+            performanceMessage = '🎉 Great job! You understand kidney physiology well!';
+            performanceColor = '#00cec9';
+        } else if (percentage >= 60) {
+            performanceMessage = '👍 Good effort! Review the slides to strengthen your understanding.';
+            performanceColor = '#fdcb6e';
+        } else {
+            performanceMessage = '📚 Keep studying! Review the lecture material and try again.';
+            performanceColor = '#ff7675';
+        }
+
+        const finalScoreHTML = `
+            <div class="final-score">
+                <h2>Quiz Complete! 🧬</h2>
+                <div class="final-percentage" style="background: linear-gradient(135deg, ${performanceColor} 0%, #d35400 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    ${percentage}%
+                </div>
+                <p style="font-size: 1.5em; margin: 20px 0;">
+                    <strong>Score: ${score} / ${totalQuestions}</strong>
+                </p>
+                <p class="performance-message">${performanceMessage}</p>
+                <button class="restart-btn" onclick="location.reload()">🔄 Retake Quiz</button>
+            </div>
+        `;
+
+        document.getElementById('finalScoreSection').innerHTML = finalScoreHTML;
+        document.getElementById('finalScoreSection').style.display = 'block';
+        document.getElementById('finalScoreSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Initialize
+    updateScoreboard();
+</script>
+```
+
+</body>
+</html>
